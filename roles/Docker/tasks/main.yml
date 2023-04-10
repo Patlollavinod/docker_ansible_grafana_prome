@@ -1,0 +1,22 @@
+- name: "Docker --dry-run"
+  apt_key:
+        url: curl -fsSL https://get.docker.com -o get-docker.sh
+        shell: sudo sh ./get-docker.sh --dry-run
+
+        state: present
+
+- name: "Docker install"
+  apt_key:
+        url: curl -fsSL https://get.docker.com -o get-docker.sh 
+        shell:  sudo sh get-docker.sh
+        state: present
+
+- name: "Update apt and install docker-ce"
+  apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+- name: "Install Docker Module for Python"
+  pip:
+        name: Docker
