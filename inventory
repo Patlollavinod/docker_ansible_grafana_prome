@@ -1,2 +1,14 @@
-[node_1]
+[prometheus]
+172.31.5.176
+
+[node_exporter]
+172.31.5.176
+
+[Docker]
+172.31.5.176
+
+[python&java]
+172.31.5.176
+
+[grafana]
 172.31.5.176
