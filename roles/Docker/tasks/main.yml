@@ -1,22 +1,40 @@
-- name: "Docker --dry-run"
+- name: Add Docker GPG key
   apt_key:
-        url: curl -fsSL https://get.docker.com -o get-docker.sh
-        shell: sudo sh ./get-docker.sh --dry-run
+    url: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg"
+    state: present
 
-        state: present
+- name: Add Docker APT repository
+  apt_repository:
+    repo: echo deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" |
+    state: present
 
-- name: "Docker install"
-  apt_key:
-        url: curl -fsSL https://get.docker.com -o get-docker.sh 
-        shell:  sudo sh get-docker.sh
-        state: present
-
-- name: "Update apt and install docker-ce"
+- name: Install Docker packages
   apt:
-        name: docker-ce
-        state: latest
-        update_cache: true
+    name: "{{ docker_packages }}"
+    state: present
 
-- name: "Install Docker Module for Python"
-  pip:
-        name: Docker
+- name: Install Docker engine
+  apt:
+    name: docker-ce
+    state: present
+
+- name: Install Docker CLI
+  apt:
+    name: docker-ce-cli
+    state: present
+
+- name: Install Containerd.io
+  apt:
+    name: containerd.io
+    state: present
+
+- name: Install Docker Buildx plugin
+  command: docker buildx install
+  args:
+    creates: /usr/bin/docker-buildx
+
+# - name: Install Docker Compose plugin
+#   command: curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
+#   args:
+#     creates: /usr/local/bin/docker-compose

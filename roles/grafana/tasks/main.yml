@@ -1,4 +1,6 @@
-- name: Install grafana
+--
+  #grafana
+- name : Install grafana
   yum: "apt-get install -y apt-transport-https software-properties-common"
   state: latest
 
