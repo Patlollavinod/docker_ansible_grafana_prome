@@ -7,44 +7,43 @@
     name: "prometheus"
     group: "prometheus"
     system: yes
-    shell: "sudo su  prometheus"
     state: present
 
 - name: Install prometheus
   unarchive:
-    src: "https://github.com/prometheus/prometheus/releases/download/v2.21.0/prometheus-2.21.0.linux-amd64.tar.gz "
-    shell: sudo mkdir -p "/usr/local/bin/prometheus"
-    dest: "/usr/local/bin/prometheus"
+    src: https://github.com/prometheus/prometheus/releases/download/v2.21.0/prometheus-2.21.0.linux-amd64.tar.gz 
+    # shell: sudo mkdir -p "/usr/local/bin/prometheus"
+    dest: /usr/local/bin/prometheus
     remote_src: yes
 
-- name: Copy prometheus file to bin
-  copy:
-    src: "/tmp/prometheus-{{ version }}.linux-amd64/prometheus"
-    dest: "/usr/local/bin/prometheus"
-    owner: "prometheus"
-    group: "prometheus"
-    remote_src: yes
-    mode: 0755
+# - name: Copy prometheus file to bin
+#   copy:
+#     src: "/tmp/prometheus-{{ version }}.linux-amd64/prometheus"
+#     dest: "/usr/local/bin/prometheus"
+#     owner: "prometheus"
+#     group: "prometheus"
+#     remote_src: yes
+#     mode: 0755
 
-- name: Delete prometheus tmp folder
-  file:
-    path: '/tmp/prometheus-{{ version }}.linux-amd64'
-    state: absent
+# - name: Delete prometheus tmp folder
+#   file:
+#     path: '/tmp/prometheus-{{ version }}.linux-amd64
+#     state: absent
 
 - name: Creates directory
   file: 
     path: "/data/prometheus/"
     state: directory
-    owner: "{{userId}}"
-    group: "{{groupId}}"
+    owner: "prometheus"
+    group: "prometheus"
     mode: 0755
 
 - name: Creates directory
   file: 
     path: "/etc/prometheus/"
     state: directory
-    owner: "{{userId}}"
-    group: "{{groupId}}"
+    owner: "prometheus"
+    group: "prometheus"
     mode: 0755
 
 - name: config file
