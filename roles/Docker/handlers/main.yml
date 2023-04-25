@@ -1,5 +1,0 @@
-- name: Restart the Docker  service
-  service:
-    name: Docker
-    state: restart
-  listen: event_restart_Docker
