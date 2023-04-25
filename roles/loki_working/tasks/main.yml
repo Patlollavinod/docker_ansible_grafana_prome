@@ -1,0 +1,63 @@
+---
+# tasks file for install_loki
+- name: Installing Required Loki packages
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "{{install_packages}}"
+
+- name: Creating Loki group
+  group:
+    name: "{{group_name}}"
+    state: present
+
+- name: Creating user for Grafana Loki
+  user:
+    name: "{{user_name}}"
+    system: true
+    shell: "{{shell_type}}"
+    home: "{{home_exist}}"
+
+- name: Download Loki binary
+  get_url:
+    url: "https://github.com/grafana/loki/releases/download/v{{ promtail_version }}/loki-linux-amd64.zip"
+    dest: "{{extract_dest}}"
+
+
+- name: Extract Loki binary
+  unarchive:
+    src: "{{extract_dest}}"
+    dest: "{{loki_install_dir}}"
+    remote_src: yes
+    creates: "{{loki_install_dir}}/{{filename_to_copy}}"
+    owner: "{{user_name}}"
+    group: "{{group_name}}"
+    mode: "{{file_permission}}"
+
+
+- name: Create Loki config file
+  template:
+    src: "{{loki_config_jinja_template}}"
+    dest: "{{loki_conf_dir}}/{{ loki_service_name }}-config.yaml"
+    owner: "{{user_name}}"
+    group: "{{group_name}}"
+
+- name: Create Loki systemd service file
+  template:
+    src: "{{loki_service_jinja_template}}"
+    dest: "{{loki_service_dest}}"
+    owner: "{{user_name}}"
+    group: "{{group_name}}"
+
+
+- name: Reload systemd services
+  systemd:
+    daemon_reload: yes
+
+- name: Start and enable Loki service
+  systemd:
+    name: "{{ loki_service_name }}"
+    state: "{{ loki_service_state }}"
+    enabled: "{{ loki_service_enabled }}"
+

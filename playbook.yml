@@ -1,0 +1,43 @@
+---
+- hosts: alertmanager
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - alertmanager
+- hosts: prometheus
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - prometheus
+- hosts: grafana
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - grafana      
+- hosts: node_exporter
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - prometheus_node_exporter
+- hosts: loki_working
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - loki_working
+- hosts: docker 
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - docker 
+- hosts: promtail_working
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - promtail_working

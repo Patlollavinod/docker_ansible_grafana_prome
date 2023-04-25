@@ -1,0 +1,40 @@
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: vinod
+    community.grafana.grafana_dashboard:
+       grafana_url: http://54.252.128.51:3000/
+       grafana_api_key: "eyJrIjoiR3J6YXlQRlVwZk92RlhYRFd3MFZqQlc2dm04c3MweU8iLCJuIjoibmFtZSIsImlkIjoxfQ=="
+       dashboard_id: 1860
+       ds_url: http://172.31.12.33:9090/
+       ds_type: "Prometheus"
+  - name: "Add Prometheus data source"
+    prometheus_datasource:
+      type: Prometheus
+      url: http://172.31.12.33:9090
+      access: proxy
+      is_default: true 
+
+  - name: Add Grafana data source
+    grafana_datasource:
+      grafana_url: http://172.31.12.33:3100
+      grafana_user: admin
+      grafana_password: admin
+      name: "Prometheus"
+      type: "prometheus"
+      access: "proxy"
+      jsonData:
+        timeInterval: "5s"
+        httpMethod: "GET"
+        tlsSkipVerify: true
+
+  - name: Import Grafana dashboard
+    grafana_dashboard:
+      grafana_url: http://54.252.128.51:3000
+      grafana_user: admin
+      grafana_password: admin
+      state: present
+      src: node-exporter-full_rev31.json
+      folder: "My Folder"
+      overwrite: true
+

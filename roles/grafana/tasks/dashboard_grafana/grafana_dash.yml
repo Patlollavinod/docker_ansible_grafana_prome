@@ -1,0 +1,22 @@
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: MyDataSource
+    type: prometheus
+    url: http://172.31.12.33:9090/
+    access: proxy
+    isDefault: true 
+
+  - name: Add datasource
+    grafana_data_source:
+      grafana_url: http://172.31.12.33:3100
+      grafana_user: admin
+      grafana_password: admin
+      config: datasource.yml
+
+  - name: Import dashboard
+    grafana_dashboard:
+      grafana_url: http://54.206.175.10:3000
+      grafana_user: admin
+      grafana_password: admin
+      src: 

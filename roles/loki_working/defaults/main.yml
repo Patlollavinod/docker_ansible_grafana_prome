@@ -1,0 +1,33 @@
+---
+# defaults file for roles/loki
+# defaults file for install_loki
+loki_version: "2.3.0"
+promtail_version: "2.3.0"
+loki_hostname: "{{ inventory_hostname }}"
+loki_http_listen_port: "3100"
+loki_grpc_listen_port: "9095"
+loki_admin_listen_port: "9096"
+loki_storage_backend: "filesystem"
+loki_storage_config:
+  filesystem:
+    directory: "/var/lib/loki"
+user_name: loki
+shell_type: /bin/false
+home_exist: /nonexistent
+
+install_packages:
+  - unzip
+
+extract_dest: /tmp/loki-linux-amd64.zip
+loki_install_dir: /usr/local/bin
+loki_conf_dir: /etc
+group_name: loki
+loki_service_name: loki
+file_permission: 0555
+loki_config_jinja_template: loki-config.yaml.j2
+
+loki_service_dest: "/etc/systemd/system/{{ loki_service_name }}.service"
+loki_service_jinja_template: loki.service.j2
+loki_service_state: started
+loki_service_enabled: true
+filename_to_copy: loki-linux-amd64.zip

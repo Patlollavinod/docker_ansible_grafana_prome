@@ -1,0 +1,41 @@
+- name: Install grafana
+  apt:
+    name: "grafana" 
+    state: latest 
+# - name: Copy Grafana dashboard JSON file
+#   copy:
+#     src:  node-exporter-full_rev31.json
+#     dest: /etc/grafana/provisioning/dashboards/dashboard.json
+#     mode: 0644
+# - name: Import dashboard
+#   shell: |
+#       - name: Import dashboard
+#   shell: |
+#       curl -H "Authorization: Bearer eyJrIjoiUERFbkZmNklITnFpM1p1VWtkeXkwSU1tSUNyYUZqQVYiLCJuIjoidGVzdCIsImlkIjoxfQ==" http://3.27.112.10:3000/api/dashboards/home
+- name: Import Grafana dashboard Zabbix 
+  community.grafana.grafana_dashboard: 
+    grafana_url: http://54.206.175.10:3000 
+    grafana_api_key: "eyJrIjoiUERFbkZmNklITnFpM1p1VWtkeXkwSU1tSUNyYUZqQVYiLCJuIjoidGVzdCIsImlkIjoxfQ==" 
+    dashboard_id: 1860
+    dashbord_revision: 1
+- name: Prometheus
+  type: prometheus
+    url: http://localhost:9090
+    isDefault: true    
+- name: "Grafana configuration file copy"
+  template:
+    src: "grafana.conf.j2"
+    dest: /etc/grafana/grafana.ini
+  notify: event_restart_grafana
+
+- name: "Grafana server started"
+  service:
+    name: grafana-server
+    enabled: true
+    state: started
+
+- name: "Check if Grafana is accessible."
+  uri:
+    url: http://127.0.0.1:3000
+    method: GET
+    status_code: 200

@@ -1,0 +1,29 @@
+---
+# defaults file for install_promtail
+
+promtail_version: 2.3.0
+promtail_conf_dir: /etc
+promtail_logs_dir: /var/log/promtail
+promtail_system_user: promtail
+promtail_system_group: promtail
+promtail_service_name: promtail
+promtail_service_state: restarted
+promtail_service_enabled: true
+promtail_grafana_datasource_name: Loki
+promtail_grafana_datasource_url: http://localhost:9080
+extract_dest: /usr/local/bin/promtail.zip
+promtail_install_dir: /usr/local/bin
+filename_to_copy: promtail-linux-amd64
+file_permission: 0555
+install_packages:
+  - unzip
+promtail_dest: "/etc/systemd/system/{{ promtail_service_name }}.service"
+service_jinja_template: promtail.service.j2
+
+promtail_config_dest: "{{promtail_conf_dir}}/{{ promtail_service_name }}-config.yaml"
+config_jinja_template: promtail-config.yaml.j2
+loki_server_ip: 3.13.197.33
+promtail_job_name: app_server_app_logs
+applogs_hostname_or_ip: localhost
+shell_type: /bin/false
+home_exist: /nonexistent

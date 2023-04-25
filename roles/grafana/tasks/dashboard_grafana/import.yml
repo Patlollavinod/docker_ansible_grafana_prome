@@ -1,0 +1,10 @@
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: vinod
+    community.grafana.grafana_dashboard:
+       grafana_url: http://54.206.175.10:3000
+       grafana_api_key: "eyJrIjoiQ2d0VFZxSXR3RTJzSTl6UFpoNFk3UzJ1RDNjSUxSckUiLCJuIjoicGF0bG9sbGEiLCJpZCI6MX0="
+       dashboard_id: 1860
+       ds_url: http://172.31.12.33:9090/
+       ds_type: "Prometheus"

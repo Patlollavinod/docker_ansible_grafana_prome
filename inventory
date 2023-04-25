@@ -1,0 +1,16 @@
+[alertmanager]
+# 172.31.12.33
+[prometheus]
+# 172.31.12.33
+[grafana]
+#172.31.6.83
+#172.31.12.33
+
+[docker]
+#172.31.6.83
+[promtail_working]
+172.31.6.83
+[node_exporter]
+#172.31.6.83
+[loki_working]
+#172.31.6.83
