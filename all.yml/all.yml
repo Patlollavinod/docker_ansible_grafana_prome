@@ -1,0 +1,106 @@
+---
+- name: Install Prometheus, Grafana, and Node Exporter
+  hosts: all
+  become: true
+  vars:
+    prometheus_version: "2.32.1"
+    node_exporter_version: "1.2.2"
+    grafana_version: "8.3.0"
+    grafana_admin_user: "admin"
+    grafana_admin_password: "admin"
+  tasks:
+    # Install necessary dependencies
+    - name: Install aptitude package manager
+      apt:
+        name: aptitude
+        state: present
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install necessary dependencies
+      apt:
+        name:
+          - curl
+          - wget
+          - gnupg2
+          - software-properties-common
+        state: present
+
+    # Install Prometheus
+    - name: Add Prometheus GPG key
+      apt_key:
+        url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x60C317803A41BA51845E371A1E9377A2BA9EF27F
+        state: present
+
+    - name: Add Prometheus repository
+      apt_repository:
+        repo: deb https://packagecloud.io/prometheus-deb/release/ubuntu focal main
+        state: present
+
+    - name: Install Prometheus
+      apt:
+        name: prometheus={{ prometheus_version }}-1
+        state: present
+
+    # Install Node Exporter
+    - name: Download Node Exporter binary
+      get_url:
+        url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz
+        dest: /tmp/node_exporter.tar.gz
+
+    - name: Extract Node Exporter binary
+      unarchive:
+        src: /tmp/node_exporter.tar.gz
+        dest: /usr/local/bin/
+        remote_src: yes
+        creates: /usr/local/bin/node_exporter-{{ node_exporter_version }}.linux-amd64
+
+    - name: Create Node Exporter systemd service file
+      template:
+        src: templates/node_exporter.service.j2
+        dest: /etc/systemd/system/node_exporter.service
+      notify: Restart Node Exporter
+
+    - name: Start Node Exporter service
+      systemd:
+        name: node_exporter
+        state: started
+        enabled: yes
+
+    # Install Grafana
+    - name: Add Grafana GPG key
+      apt_key:
+        url: https://packages.grafana.com/gpg.key
+        state: present
+
+    - name: Add Grafana repository
+      apt_repository:
+        repo: deb https://packages.grafana.com/oss/deb stable main
+        state: present
+
+    - name: Install Grafana
+      apt:
+        name: grafana={{ grafana_version }}
+        state: present
+
+    - name: Configure Grafana admin user and password
+      template:
+        src: templates/grafana.ini.j2
+        dest: /etc/grafana/grafana.ini
+        owner: root
+        group: root
+        mode: 0644
+      notify: Restart Grafana
+
+  handlers:
+    - name: Restart Node Exporter
+      systemd:
+        name: node_exporter
+        state: restarted
+
+    - name: Restart Grafana
+      systemd:
+        name: grafana-server
+        state: restarted
