@@ -10,7 +10,7 @@ pipeline {
             steps {
                 ansiblePlaybook(
                     playbook: ".playbook.yaml",
-                    inventory: "${ANSIBLE_HOSTS}",
+                    inventory: . invertory
                     sshKey: "${ANSIBLE_SSH_PRIVATE_KEY_FILE}"
                 )
             }
