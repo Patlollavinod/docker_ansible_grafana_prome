@@ -11,7 +11,6 @@ pipeline {
                 ansiblePlaybook(
                     playbook: ". playbook.yaml",
                     inventory: ". invertory",
-                    sshKey: "${ANSIBLE_SSH_PRIVATE_KEY_FILE}"
                 )
             }
         }
