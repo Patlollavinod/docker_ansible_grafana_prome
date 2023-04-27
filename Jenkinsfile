@@ -10,7 +10,6 @@ pipeline {
             steps {
                  sh "pwd"
                  sh "ls"
-                 sh "ls" 
                  sh "ansible-playbook -i inventory playbook.yml"
             }
         }
