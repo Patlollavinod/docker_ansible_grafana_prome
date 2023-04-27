@@ -8,10 +8,7 @@ pipeline {
         }
         stage('Deploy with Ansible') {
             steps {
-                ansiblePlaybook(
-                    playbook: ". playbook.yaml",
-                    inventory: ". invertory",
-                )
+               sh "ansible-playbook -i inventory playbook"
             }
         }
     }
