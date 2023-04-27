@@ -8,7 +8,9 @@ pipeline {
         }
         stage('Deploy with Ansible') {
             steps {
-               sh "ansible-playbook -i inventory playbook"
+                 sh "pwd"
+                 sh "ls"
+                 sh "ansible-playbook -i inventory playbook"
             }
         }
     }
