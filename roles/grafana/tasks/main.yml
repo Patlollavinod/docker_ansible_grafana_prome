@@ -19,7 +19,7 @@
     dashboard_id: 1860
     dashbord_revision: 1
 - name: Prometheus
-  type: prometheus
+  type: "prometheus"
     url: http://localhost:9090
     isDefault: true    
 - name: "Grafana configuration file copy"
