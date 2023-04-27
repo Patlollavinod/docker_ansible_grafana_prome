@@ -9,7 +9,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 ansiblePlaybook(
-                    playbook: "/path/to/ansible/playbook.yaml",
+                    playbook: ".playbook.yaml",
                     inventory: "${ANSIBLE_HOSTS}",
                     sshKey: "${ANSIBLE_SSH_PRIVATE_KEY_FILE}"
                 )
