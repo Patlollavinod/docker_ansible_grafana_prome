@@ -1,6 +1,6 @@
 ---
 - name: Install Promtail
-  hosts: all
+  hosts: local
   become: yes
 
   tasks:
