@@ -9,28 +9,23 @@ pipeline {
         }
         stage('Install Docker') {
             steps {
-                // Run Ansible playbook to install Docker
-                ansiblePlaybook(
                     playbook: 'install-docker.yml',
                     inventory: 'inventory'
                     sh "ansible-playbook -i inventory install-docker.yml"
-                                )
+                                
             }
         }
         stage('Install Prometheus') {
             steps {
-                // Run Ansible playbook to install Prometheus
-                ansiblePlaybook(
                     playbook: 'install-prometheus.yml',
                     inventory: 'inventory'
                     sh "ansible-playbook -i inventory install-prometheus.yml"
-                )
             }
         }
         stage('Install NodeExporter') {
             steps {
                 // Run Ansible playbook to install NodeExporter
-                ansiblePlaybook(
+                ansiblePlaybook
                     playbook: 'install-nodeexporter.yml',
                     inventory: 'inventory'
                     sh "ansible-playbook -i inventory install-nodeexpprter.yml"
