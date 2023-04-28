@@ -13,6 +13,7 @@ pipeline {
                 ansiblePlaybook(
                     playbook: 'install-docker.yml',
                     inventory: 'inventory'
+                    sh "ansible-playbook -i inventory install-docker.yml"
                 )
             }
         }
@@ -22,6 +23,7 @@ pipeline {
                 ansiblePlaybook(
                     playbook: 'install-prometheus.yml',
                     inventory: 'inventory'
+                    sh "ansible-playbook -i inventory install-prometheus.yml"
                 )
             }
         }
@@ -31,6 +33,7 @@ pipeline {
                 ansiblePlaybook(
                     playbook: 'install-nodeexporter.yml',
                     inventory: 'inventory'
+                    sh "ansible-playbook -i inventory install-nodeexpprter.yml"
                 )
             }
         }
@@ -40,6 +43,7 @@ pipeline {
                 ansiblePlaybook(
                     playbook: 'install-loki.yml',
                     inventory: 'inventory'
+                    sh "ansible-playbook -i inventory install-loki.yml"
                 )
             }
         }
@@ -49,6 +53,7 @@ pipeline {
                 ansiblePlaybook(
                     playbook: 'install-grafana.yml',
                     inventory: 'inventory'
+                    sh "ansible-playbook -i inventory install-grafana.yml"
                 )
             }
         }
