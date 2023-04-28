@@ -23,21 +23,21 @@ pipeline {
             steps {
                
                     sh "ansible-playbook -i inventory install-nodeexpprter.yml"
-                )
+                
             }
         }
         stage('Install Loki') {
             steps {
                 
                     sh "ansible-playbook -i inventory install-loki.yml"
-                )
+                
             }
         }
         stage('Install Grafana') {
             steps {
                
                     sh "ansible-playbook -i inventory install-grafana.yml"
-                )
+                
             }
         }
         stage('Clean Up') {
