@@ -14,7 +14,7 @@ pipeline {
                     playbook: 'install-docker.yml',
                     inventory: 'inventory'
                     sh "ansible-playbook -i inventory install-docker.yml"
-                )
+                                )
             }
         }
         stage('Install Prometheus') {
