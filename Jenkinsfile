@@ -8,7 +8,8 @@ pipeline {
             }
         }
         stage('Install Docker') {
-            steps {
+            steps {  
+                    sh "pwd"
                     sh "ansible-playbook -i inventory install-docker.yml"
                                 
             }
