@@ -1,0 +1,22 @@
+---
+- name: Install Loki
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Add Loki repository key
+      apt_key:
+        url: https://raw.githubusercontent.com/grafana/loki/main/pkg/keys/public_key.asc
+        state: present
+
+    - name: Add Loki repository
+      apt_repository:
+        repo: deb https://dl.packager.io/srv/loki/release/debian {{ ansible_distribution_release }} main
+        state: present
+        filename: loki.list
+
+    - name: Install Loki
+      apt:
+        name: loki
+        state: present
+
