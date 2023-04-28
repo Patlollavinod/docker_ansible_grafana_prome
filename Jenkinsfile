@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your source code from version control system
-                checkout scm
+                checkout([$class: 'GitSCM', branches: [[name: '*/ansible_jenkins']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Patlollavinod/docker_ansible_grafana_prome.git']]])
             }
         }
         stage('Install Docker') {
