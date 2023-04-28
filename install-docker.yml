@@ -4,6 +4,7 @@
   become: yes
   tasks:
 - name: Install required packages
+  apt:
     name:
       - apt-transport-https
       - ca-certificates
