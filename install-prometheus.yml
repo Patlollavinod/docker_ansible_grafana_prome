@@ -1,0 +1,21 @@
+---
+- name: Install Prometheus
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Add Prometheus repository key
+      apt_key:
+        url: https://packagecloud.io/prometheus-rpm/release/gpgkey
+        state: present
+
+    - name: Add Prometheus repository
+      apt_repository:
+        repo: deb https://packagecloud.io/prometheus-rpm/release/deb/{{ ansible_distribution_release }}/ {{ ansible_distribution_release }} main
+        state: present
+        filename: prometheus.list
+
+    - name: Install Prometheus
+      apt:
+        name: prometheus
+        state: present
