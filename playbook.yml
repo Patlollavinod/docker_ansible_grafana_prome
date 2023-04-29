@@ -1,12 +1,12 @@
 - name: install monitoring stack
-  hosts: all
+  hosts: vinod
   become: yes
   roles:
   - prometheus
   - grafana
 
 - name: install node-exporter
-  hosts: all
+  hosts: vinod
   become: yes
   roles:
   - node-exporter
