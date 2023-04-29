@@ -1,6 +1,6 @@
 ---
 - name: Install Docker
-  hosts: 172.31.36.228
+  hosts: webserver
   become: true
   tasks:
     - name: Install Docker dependencies
