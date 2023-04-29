@@ -1,6 +1,6 @@
 ---
 - name: Install Prometheus
-  hosts: local
+  hosts: all
   become: yes
 
   tasks:
