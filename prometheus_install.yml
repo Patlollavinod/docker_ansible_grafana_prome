@@ -1,0 +1,21 @@
+---
+- name: Install Prometheus
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Add Prometheus repository key
+      apt_key:
+        url: https://raw.githubusercontent.com/prometheus/prometheus/main/LICENSE
+        state: present
+
+    - name: Add Prometheus repository
+      apt_repository:
+        repo: deb https://packages.grafana.com/oss/prometheus/ stable main
+        state: present
+        filename: prometheus.list
+
+    - name: Install Prometheus
+      apt:
+        name: prometheus
+        state: present
