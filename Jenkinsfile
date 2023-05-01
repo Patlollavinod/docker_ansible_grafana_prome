@@ -14,14 +14,13 @@ pipeline {
                                 
             }
         }
-        #
         stage('Install NodeExporter') {
             steps {
                
                     sh "ansible-playbook -i inventory.yml install-nodeexpprter.yml"
                 
             }
-        }#
+        }
         stage('Install Loki') {
             steps {
                 
