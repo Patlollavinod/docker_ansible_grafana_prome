@@ -11,7 +11,8 @@
 
     - name: Add Prometheus repository
       apt_repository:
-        repo: deb https://packagecloud.io/prometheus-rpm/release/deb/{{ ansible_distribution_release }}/ {{ ansible_distribution_release }} main
+        #repo: deb https://packagecloud.io/prometheus-rpm/release/deb/{{ ansible_distribution_release }}/ {{ ansible_distribution_release }} main
+        repo: deb https://packages.grafana.com/oss/prometheus/ stable main
         state: present
         filename: prometheus.list
 
