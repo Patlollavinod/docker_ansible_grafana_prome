@@ -17,7 +17,7 @@ pipeline {
         stage('Install NodeExporter') {
             steps {
                
-                    sh "ansible-playbook -i inventory.yml install-nodeexpprter.yml"
+                    sh "ansible-playbook -i inventory.yml install-node_exporter.yml"
                 
             }
         }
