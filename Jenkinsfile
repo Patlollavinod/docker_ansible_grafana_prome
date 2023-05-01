@@ -17,7 +17,7 @@ pipeline {
         stage('Install Prometheus') {
             steps {
                    
-                    sh "ansible-playbook -i inventory.yml install-prometheus.yml"
+                    sh "ansible-playbook -i inventory.yml prometheus_install.yml"
             }
         }
         stage('Install NodeExporter') {
