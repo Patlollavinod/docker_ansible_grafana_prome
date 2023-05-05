@@ -15,10 +15,8 @@ pipeline {
         }
         stage(' install-docker') {
             steps {
-                sshagent(['app_server']) {
                     sh "ansible-playbook -i inventory.yml install-docker.yml"
                 }
-            }
         }
         stage('install-promtail') {
             steps {
