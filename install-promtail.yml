@@ -1,0 +1,6 @@
+- hosts: promtail
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - promtail

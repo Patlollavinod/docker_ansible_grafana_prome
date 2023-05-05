@@ -1,0 +1,50 @@
+- name: Install required packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+
+- name: Add Docker GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker repository
+  apt_repository:
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable'
+    state: present
+    update_cache: false
+
+- name: Install Docker
+  apt:
+    name: "docker-ce"
+    state: present
+
+- name: Add user to Docker group
+  user:
+    name: ubuntu
+    group: docker
+    append: yes
+
+- name: Login to Docker registry
+  docker_login:
+    username: vinodpatlolla
+    password: PvK@$2211
+
+- name: Pull Docker image
+  docker_image:
+    name: vinodpatlolla/docker
+    source: pull
+
+- name: Run Docker container
+  docker_container:
+    name: sample_app
+    image: vinodpatlolla/docker
+    ports:
+      - "9000:8080"
+    state: started
+

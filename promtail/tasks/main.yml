@@ -1,0 +1,61 @@
+---
+# tasks file for install_promtail
+
+- name: Installing Required install_packages
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - "{{install_packages}}"
+
+- name: Create Promtail user
+  user:
+    name: "{{promtail_system_user}}"
+    system: true
+    shell: "{{shell_type}}"
+    home: "{{home_exist}}"
+
+- name: Download Promtail binary
+  get_url:
+    url: "https://github.com/grafana/loki/releases/download/v{{ promtail_version }}/promtail-linux-amd64.zip"
+    dest: "{{extract_dest}}"
+
+- name: Extract Promtail binary
+  unarchive:
+    src: "{{extract_dest}}"
+    dest: "{{promtail_install_dir}}"  
+    remote_src: yes
+    creates: "{{promtail_install_dir}}"
+    owner: "{{promtail_system_user}}"
+    group: "{{promtail_system_group}}"
+    mode: "{{file_permission}}"
+- name: Extract zip file
+  unarchive:
+    src: /usr/local/bin/promtail.zip
+    dest: /usr/local/bin/
+    remote_src: yes
+      # copy: no      
+    creates: /usr/local/bin/promtail-linux-amd64
+- name: Create Promtail systemd service file
+  template:
+    src: "{{service_jinja_template}}"
+    dest: "{{promtail_dest}}"
+    owner: "{{promtail_system_user}}"
+    group: "{{promtail_system_group}}"
+
+- name: Create Promtail config file
+  template:
+    src: "{{config_jinja_template}}"
+    dest: "{{promtail_config_dest}}"
+    owner: "{{promtail_system_user}}"
+    group: "{{promtail_system_group}}"
+
+- name: Reload systemd services
+  systemd:
+    daemon_reload: yes
+
+- name: Start and enable Promtail service
+  systemd:
+    name: "{{ promtail_service_name }}"
+    state: "{{ promtail_service_state }}"
+    enabled: "{{ promtail_service_enabled }}"
