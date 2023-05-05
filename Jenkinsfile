@@ -45,7 +45,6 @@ pipeline {
                 sh "ansible-playbook -i inventory.yml install-prometheus.yml"
             }
             }
-        }
         stage('install grafana') {
             steps {
                 sh "ansible-playbook -i inventory.yml install-grafana.yml"
