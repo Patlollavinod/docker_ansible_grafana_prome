@@ -8,48 +8,47 @@ pipeline {
         }
         stage('checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/vamshikrishna1997/devops_task.git'
+                checkout scmGit(branches: [[name: '*/jenkins_task']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Patlollavinod/docker_ansible_grafana_prome.git']])
                 sh "pwd"
                 sh "ls"
             }
         }
-        stage('docker install') {
+        stage(' install-docker') {
             steps {
                 sshagent(['app_server']) {
-                    sh "ansible-playbook install_docker1.yml --check"
+                    sh "ansible-playbook -i inventory.yml install-docker.yml"
                 }
             }
         }
-        stage('docker deploy') {
+        stage('install-promtail') {
             steps {
-                sh "ansible-playbook docker_web.yml --check"
+                sh "ansible-playbook -i inventory.yml install-promtail.yml "
             }
         }
         stage('promtail installation') {
             steps {
-                sh "ansible-playbook promtail.yml"
+                sh "ansible-playbook -i inventory.yml install-promtail.yml"
             }
         }
         stage('install loki') {
             steps {
-                sh "ansible-playbook loki.yml"
+                sh "ansible-playbook -i inventory.yml install-loki.yml"
             }
         }
         stage('install node_exporter') {
             steps {
-                sh "ansible-playbook node_exporter.yml"
+                sh "ansible-playbook -i inventory.yml install-node_exporter.yml"
             }
         }
         stage('install prometheus') {
             steps {
-                sshagent(['app_server']) {
-                sh "ansible-playbook prometheus.yml"
+                sh "ansible-playbook -i inventory.yml install-prometheus.yml"
             }
             }
         }
         stage('install grafana') {
             steps {
-                sh "ansible-playbook grafana.yml"
+                sh "ansible-playbook -i inventory.yml install-grafana.yml"
             }
         }
     }
