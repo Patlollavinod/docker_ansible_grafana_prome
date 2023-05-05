@@ -48,4 +48,4 @@ pipeline {
                 sh "ansible-playbook -i inventory.yml install-grafana.yml"
             }
         }
-    }
+       } 
